@@ -343,3 +343,27 @@
   border-radius: 6px;
   padding: 3px 8px;
 }
+
+#cwr-panel .cwr-cal {
+  display: flex;
+  gap: 2px;
+}
+
+#cwr-panel .cwr-cal-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#cwr-panel .cwr-day {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+}
+
+#cwr-panel .cwr-day.e { background: var(--cwr-line); }
+#cwr-panel .cwr-day.w { background: var(--cwr-win); }
+#cwr-panel .cwr-day.d { background: #d9a441; }
+#cwr-panel .cwr-day.l { background: var(--cwr-loss); }
+#cwr-panel .cwr-day.future { background: transparent; }

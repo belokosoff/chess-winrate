@@ -161,6 +161,13 @@
           const { win, draw, loss } = s.record;
           out.push(statRow(rating ? `${t(m)} ${rating}` : t(m), { w: win, d: draw, l: loss }));
         }
+        const tactics = st.stats.tactics?.highest?.rating;
+        const rush = st.stats.puzzle_rush?.best?.score;
+        if (tactics || rush) {
+          out.push(sub(t("sec_puzzles")));
+          if (tactics) out.push(kv(t("puzzle_rating"), String(tactics)));
+          if (rush) out.push(kv(t("puzzle_rush"), String(rush)));
+        }
       }
       if (st.games) {
         const games = filtered();
@@ -214,12 +221,34 @@
       return out;
     }
 
+    // Цвет ячейки — винрейт за день (<40% красный, 40–60% жёлтый, >60% зелёный), яркость — число партий.
+    function calendarBlock(games) {
+      const cells = CWR.calendar(games).map((week) =>
+        h(
+          "div",
+          { class: "cwr-cal-col" },
+          week.map((c) => {
+            if (!c) return h("i", { class: "cwr-day future" });
+            const kind = !c.n ? "e" : c.pct < 40 ? "l" : c.pct <= 60 ? "d" : "w";
+            const when = c.date.toLocaleDateString(CWR.lang());
+            return h("i", {
+              class: `cwr-day ${kind}`,
+              title: c.n ? `${when} · ${c.n} · ${CWR.fmtPct(c.pct)}` : when,
+              style: c.n ? { opacity: c.n >= 5 ? 1 : c.n >= 2 ? 0.75 : 0.5 } : null,
+            });
+          }),
+        ),
+      );
+      return [sub(t("cal_title")), h("div", { class: "cwr-cal" }, cells), muted(t("cal_hint"))];
+    }
+
     function timeTab() {
       const games = filtered();
       if (!games.length) return [muted(t("no_games"))];
       const agg = CWR.aggregate(games);
       const days = t("weekdays").split(",");
       return [
+        ...calendarBlock(games),
         sub(t("by_hour")),
         ...agg.hours.map((r, i) => statRow(HOURS[i], r)),
         sub(t("by_weekday")),

@@ -1,5 +1,6 @@
 (() => {
   const DICT = {
+    ...CWR.locales, // es, de, fr (src/locales.js)
     ru: {
       winrate: "Винрейт",
       opponent: "Соперник",
@@ -130,8 +131,13 @@
       collapse: "Свернуть",
       expand: "Развернуть",
       error: "Ошибка загрузки: {0}",
+      sec_puzzles: "Задачи",
+      puzzle_rating: "Рейтинг задач (максимум)",
+      puzzle_rush: "Puzzle Rush, лучший результат",
+      cal_title: "Календарь партий",
+      cal_hint: "Цвет: винрейт за день, яркость: число партий",
       // popup
-      s_title: "Chess.com Winrate",
+      s_title: "Winrate Stats for Chess.com",
       s_lang: "Язык",
       s_lang_auto: "Авто",
       s_panel: "Показывать панель статистики",
@@ -276,7 +282,12 @@
       collapse: "Collapse",
       expand: "Expand",
       error: "Load error: {0}",
-      s_title: "Chess.com Winrate",
+      sec_puzzles: "Puzzles",
+      puzzle_rating: "Puzzle rating (highest)",
+      puzzle_rush: "Puzzle Rush best score",
+      cal_title: "Game calendar",
+      cal_hint: "Color: winrate of the day; intensity: number of games",
+      s_title: "Winrate Stats for Chess.com",
       s_lang: "Language",
       s_lang_auto: "Auto",
       s_panel: "Show the stats panel",
@@ -295,9 +306,12 @@
 
   let lang = "en";
 
+  const SUPPORTED = Object.keys(DICT);
+
   CWR.setLang = (pref) => {
-    const auto = (navigator.language || "en").toLowerCase().startsWith("ru") ? "ru" : "en";
-    lang = pref === "ru" || pref === "en" ? pref : auto;
+    const nav = (navigator.language || "en").slice(0, 2).toLowerCase();
+    const auto = SUPPORTED.includes(nav) ? nav : "en";
+    lang = SUPPORTED.includes(pref) ? pref : auto;
     return lang;
   };
 
@@ -307,4 +321,6 @@
   };
 
   CWR.lang = () => lang;
+  CWR.languages = () => SUPPORTED;
+  CWR.dictionary = (code) => DICT[code];
 })();

@@ -295,6 +295,37 @@
     };
   }
 
+  // Календарь по неделям (понедельник сверху): weeks колонок по 7 дней, последние дни — до сегодняшнего.
+  // Ячейка — null для будущих дней, иначе { date, n, pct, rec }.
+  function calendar(games, weeks = 26, nowMs = Date.now()) {
+    const dayStart = (ms) => {
+      const d = new Date(ms);
+      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    };
+    const key = (d) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    const today = dayStart(nowMs);
+    const start = new Date(today);
+    start.setDate(today.getDate() - ((today.getDay() + 6) % 7) - (weeks - 1) * 7);
+
+    const byDay = new Map();
+    for (const g of games) {
+      const k = key(dayStart(g.t * 1000));
+      let r = byDay.get(k);
+      if (!r) byDay.set(k, (r = rec()));
+      r[g.o]++;
+    }
+
+    return Array.from({ length: weeks }, (_, w) =>
+      Array.from({ length: 7 }, (_, i) => {
+        const date = new Date(start);
+        date.setDate(start.getDate() + w * 7 + i);
+        if (date > today) return null;
+        const r = byDay.get(key(date)) ?? null;
+        return { date, rec: r, n: r ? count(r) : 0, pct: r ? pct(r) : null };
+      }),
+    );
+  }
+
   const recentLosses = (games, n = 15) => games.filter((g) => g.o === "l").slice(-n).reverse();
 
   const csvCell = (v) => {
@@ -342,6 +373,7 @@
     timeUsage,
     accuracy,
     recentLosses,
+    calendar,
     tcLabel,
     byTimeControl,
     openingHighlights,

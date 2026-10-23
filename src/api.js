@@ -21,8 +21,55 @@
 
   const VALID_USER = /^[A-Za-z0-9_-]{2,25}$/;
 
+  // Кэш ответов лежит в storage.local (квота браузера ~5–10 МБ). Держим его в бюджете и выбрасываем давно не нужные записи.
+  const CACHE_BUDGET = 4 * 1024 * 1024;
+  const CACHE_KEY = /^[psam]:/;
+  const DAY = 24 * 60 * 60 * 1000;
+
   const inflight = new Map();
   const missing = new Map(); // key -> когда ответ был "нет данных"; повторно не спрашиваем
+  let pruneTimer = null;
+
+  // Удаляет записи, к которым давно не обращались (поле u, иначе время загрузки t), пока кэш не уменьшится до 75% бюджета.
+  async function prune(budget = CACHE_BUDGET) {
+    const all = await CWR.ext.storage.local.get(null);
+    const entries = Object.entries(all)
+      .filter(([k]) => CACHE_KEY.test(k))
+      .map(([k, v]) => ({ k, size: k.length + JSON.stringify(v).length, used: v.u ?? v.t ?? 0 }));
+    let total = entries.reduce((sum, e) => sum + e.size, 0);
+    if (total <= budget) return 0;
+    const drop = [];
+    for (const e of entries.sort((a, b) => a.used - b.used)) {
+      if (total <= budget * 0.75) break;
+      drop.push(e.k);
+      total -= e.size;
+    }
+    await CWR.ext.storage.local.remove(drop);
+    return drop.length;
+  }
+
+  function schedulePrune() {
+    if (pruneTimer) return;
+    pruneTimer = setTimeout(() => {
+      pruneTimer = null;
+      prune().catch((e) => console.debug("[chess-winrate] prune failed", e));
+    }, 5000);
+  }
+
+  // Запись в кэш; при нехватке места чистим старое и пробуем ещё раз.
+  async function put(key, value) {
+    try {
+      await CWR.ext.storage.local.set({ [key]: value });
+    } catch {
+      try {
+        await prune(CACHE_BUDGET / 2);
+        await CWR.ext.storage.local.set({ [key]: value });
+      } catch (e) {
+        console.debug("[chess-winrate] cache write failed", e);
+      }
+    }
+    schedulePrune();
+  }
 
   async function getJSON(url) {
     let res;
@@ -45,15 +92,8 @@
     if (inflight.has(key)) return inflight.get(key);
     const p = (async () => {
       const v = await load();
-      if (v === null) {
-        missing.set(key, Date.now());
-      } else {
-        try {
-          await CWR.ext.storage.local.set({ [key]: { t: Date.now(), v } });
-        } catch (e) {
-          console.debug("[chess-winrate] cache write failed", e);
-        }
-      }
+      if (v === null) missing.set(key, Date.now());
+      else await put(key, { t: Date.now(), v });
       return v;
     })().finally(() => inflight.delete(key));
     inflight.set(key, p);
@@ -136,6 +176,7 @@
     compact,
     openingFamily,
     clockStats,
+    prune,
     isValidUser: (user) => VALID_USER.test(user),
 
     getProfile: async (user) =>
@@ -156,15 +197,15 @@
       const now = new Date();
       const isCurrent = +m[1] === now.getUTCFullYear() && +m[2] === now.getUTCMonth() + 1;
       const got = (await CWR.ext.storage.local.get(key))[key];
-      if (got && got.v.ver === FORMAT && (got.v.final || Date.now() - got.t < SHORT_TTL)) return got.v.games;
+      if (got && got.v.ver === FORMAT && (got.v.final || Date.now() - got.t < SHORT_TTL)) {
+        // отмечаем, что запись нужна, но не чаще раза в сутки, чтобы не писать в хранилище при каждом просмотре
+        if (Date.now() - (got.u ?? got.t) > DAY) put(key, { ...got, u: Date.now() });
+        return got.v.games;
+      }
       const data = await getJSON(url);
       if (!data) return []; // сбой или пустой ответ не кэшируем: иначе прошлый месяц навсегда останется пустым
       const games = (data.games ?? []).map((g) => compact(g, user)).filter(Boolean);
-      try {
-        await CWR.ext.storage.local.set({ [key]: { t: Date.now(), v: { final: !isCurrent, games, ver: FORMAT } } });
-      } catch (e) {
-        console.debug("[chess-winrate] cache write failed", e);
-      }
+      await put(key, { t: Date.now(), u: Date.now(), v: { final: !isCurrent, games, ver: FORMAT } });
       return games;
     },
 
@@ -188,7 +229,7 @@
 
     async clearCache() {
       const all = await CWR.ext.storage.local.get(null);
-      const keys = Object.keys(all).filter((k) => /^[psam]:/.test(k));
+      const keys = Object.keys(all).filter((k) => CACHE_KEY.test(k));
       await CWR.ext.storage.local.remove(keys);
       return keys.length;
     },

@@ -54,7 +54,7 @@ const ctx = {
 ctx.globalThis = ctx;
 vm.createContext(ctx);
 ctx.CWR = { ext };
-for (const f of ["i18n", "settings", "api", "stats"]) {
+for (const f of ["locales", "i18n", "settings", "api", "stats"]) {
   vm.runInContext(fs.readFileSync(path.join(__dirname, "..", "src", `${f}.js`), "utf8"), ctx, { filename: f });
 }
 const { CWR } = ctx;
@@ -127,13 +127,25 @@ const { CWR } = ctx;
   CWR.setLang("en");
   assert.equal(CWR.t("last_n", 20), "Last 20");
 
-  // every key exists in both languages
-  const src = fs.readFileSync(path.join(__dirname, "..", "src", "i18n.js"), "utf8");
-  const [ru, en] = ["ru", "en"].map((l) => {
-    const block = src.split(new RegExp(`\\n    ${l}: \\{`))[1];
-    return new Set([...block.matchAll(/^\s{6}(\w+):/gm)].map((m) => m[1]).slice(0, 200));
-  });
-  for (const k of ru) assert.ok(en.has(k) || k === "ru", `missing in en: ${k}`);
+  // every language has exactly the keys of the Russian dictionary, with the same {n} placeholders
+  const ru = CWR.dictionary("ru");
+  const placeholders = (str) => Array.from(str.matchAll(/\{\d+\}/g), (m) => m[0]).sort().join();
+  assert.deepEqual(Array.from(CWR.languages()).sort(), ["de", "en", "es", "fr", "ru"]);
+  for (const code of CWR.languages()) {
+    const dict = CWR.dictionary(code);
+    assert.deepEqual(Object.keys(dict).sort(), Object.keys(ru).sort(), `keys differ in ${code}`);
+    for (const [key, value] of Object.entries(dict)) {
+      assert.ok(value.trim(), `${code}.${key} is empty`);
+      assert.equal(placeholders(value), placeholders(ru[key]), `${code}.${key} placeholders`);
+    }
+    assert.equal(dict.weekdays.split(",").length, 7, `${code} weekdays`);
+  }
+  CWR.setLang("es");
+  assert.equal(CWR.t("last_n", 20), "Últimas 20");
+  CWR.setLang("de");
+  assert.equal(CWR.t("goal_eta_v", 5, 3), "≈ 5 Partien (~3 Tage)");
+  CWR.setLang("xx"); // unknown preference falls back to the browser language ("ru-RU" in this test)
+  assert.equal(CWR.lang(), "ru");
 
   // clock usage, accuracy, game link
   const pgn =
@@ -228,6 +240,25 @@ const { CWR } = ctx;
   assert.equal(CWR.goalProgress(flat, "all", 450, now).gamesNeeded, null);
   assert.equal(CWR.goalProgress([], "all", 450, now), null);
 
+  // calendar: 26 weeks x 7 days, Monday first, no cells after today
+  const todayMs = new Date(2026, 9, 23, 12).getTime(); // Friday
+  const stamp = (y, m, d, h = 10) => Math.floor(new Date(y, m, d, h).getTime() / 1000);
+  const calGames = [
+    rg("w", 1, 1, { t: stamp(2026, 9, 23) }),
+    rg("w", 1, 1, { t: stamp(2026, 9, 23, 18) }),
+    rg("l", 1, 1, { t: stamp(2026, 9, 22) }),
+    rg("l", 1, 1, { t: stamp(2020, 0, 1) }), // far outside the window
+  ];
+  const cal = CWR.calendar(calGames, 26, todayMs);
+  assert.equal(cal.length, 26);
+  assert.ok(cal.every((w) => w.length === 7));
+  const lastWeek = cal.at(-1);
+  assert.equal(lastWeek[0].date.getDay(), 1, "weeks start on Monday");
+  assert.deepEqual(Array.from(lastWeek, (c) => c === null), [false, false, false, false, false, true, true], "Mon-Fri exist, Sat-Sun are in the future");
+  assert.deepEqual({ n: lastWeek[4].n, pct: lastWeek[4].pct }, { n: 2, pct: 100 });
+  assert.deepEqual({ n: lastWeek[3].n, pct: lastWeek[3].pct }, { n: 1, pct: 0 });
+  assert.equal(cal.flat().filter((c) => c && c.n).length, 2, "old games fall outside the window");
+
   // old cached months (without the new fields) are refetched once
   const mkey = Object.keys(store).find((k) => k.startsWith("m:me:"));
   store[mkey].v.ver = 1;
@@ -249,6 +280,29 @@ const { CWR } = ctx;
   assert.equal(thrown, 1, "a failed lookup is not retried on every call");
   ctx.fetch = realFetch;
 
+  // cache pruning drops the least recently used entries and never touches settings
+  for (const k of Object.keys(store)) delete store[k];
+  const filler = (u) => ({ t: 1, u, v: "x".repeat(1000) });
+  store["m:me:2020/01"] = filler(1);
+  store["m:me:2020/02"] = filler(2);
+  store["m:me:2020/03"] = filler(3);
+  store.settings = { lang: "en" };
+  assert.equal(await CWR.api.prune(100_000), 0, "nothing is dropped within the budget");
+  assert.equal(await CWR.api.prune(2500), 2);
+  assert.deepEqual(Object.keys(store).sort(), ["m:me:2020/03", "settings"]);
+
+  // a failed write (quota) prunes and retries once; the games are still returned
+  const realSet = ext.storage.local.set;
+  let failures = 1;
+  ext.storage.local.set = async (o) => {
+    if (failures-- > 0) throw new Error("QuotaExceededError");
+    return realSet(o);
+  };
+  const retried = await CWR.api.getMonth("me", month(2024, 1));
+  ext.storage.local.set = realSet;
+  assert.equal(retried.length, 2);
+  assert.ok(store["m:me:2024/01"], "the entry is stored on the retry");
+
   // clear cache keeps settings
   await CWR.saveSettings({ me: "me" });
   await CWR.api.clearCache();
@@ -256,6 +310,7 @@ const { CWR } = ctx;
   assert.equal((await CWR.loadSettings()).me, "me");
 
   console.log("all tests passed");
+  process.exit(0); // отложенная очистка кэша держит процесс ещё 5 секунд
 })().catch((e) => {
   console.error(e);
   process.exit(1);
