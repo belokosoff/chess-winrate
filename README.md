@@ -1,53 +1,57 @@
 # Winrate Stats for Chess.com
 
-Расширение для Chrome и Firefox (Manifest V3). Показывает статистику игроков на chess.com.
-Использует только публичный API chess.com. Подсказок ходов нет.
+**English** | [Русский](README.ru.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Français](README.fr.md)
 
-## Возможности
+A browser extension for Chrome and Firefox (Manifest V3) that shows player statistics on chess.com.
+It uses only the public chess.com API and never suggests moves. Unofficial, not affiliated with Chess.com.
 
-- Панель статистики на странице профиля (`/member/ник`), во время партии (для соперника) и на главной (для вашего ника из настроек).
-- Вкладки: обзор, дебюты, концовки, «Когда», динамика, «Разбор», «Поражения», «Сравнение», личные встречи.
-- Винрейт по цвету, дебютам, режимам, контролю времени (3+0, 10+0, ...) и периоду; сильные и слабые дебюты.
-- «Разбор»: расход времени, винрейт по рейтингу соперника, сессии (после поражений), точность.
-- «Динамика»: цель по рейтингу с прогнозом, неделя к неделе, графики рейтинга и скользящего винрейта.
-- «Поражения»: последние 15 поражений со ссылкой на разбор партии на chess.com.
-- «Сравнение»: два игрока рядом.
-- Предупреждение «сделайте перерыв» после 3 поражений подряд.
-- Бейдж `WR xx%` рядом с никами, экспорт в CSV и JSON.
-- Светлая и тёмная темы, перетаскиваемая панель (двойной клик по заголовку возвращает на место), Alt+W сворачивает панель.
-- Попап настроек: язык (RU/EN), тема, период и режим по умолчанию, глубина загрузки, ваш ник, цель, очистка кэша.
+## Features
 
-## Установка
+- A stats panel on profile pages (`/member/<username>`), during a game (for your opponent) and on the home page (for your own username from the settings).
+- Tabs: Overview, Openings, Endings, When, Trend, Insights, Losses, Compare, Head to head.
+- Winrate by color, opening, mode, time control (3+0, 10+0, …) and period; strongest and weakest openings.
+- Insights: time usage, winrate against stronger and weaker opponents, sessions (how you play after a loss), accuracy.
+- Trend: rating goal with an estimate, week-over-week report, rating and rolling winrate charts.
+- Losses: your last 15 losses with a link to the game review on chess.com.
+- Compare: two players side by side.
+- A "take a break" hint after 3 losses in a row.
+- A `WR xx%` badge next to usernames, CSV and JSON export.
+- Light and dark themes, a draggable panel (double-click the header to reset it), `Alt+W` collapses the panel.
+- A settings popup: language (English/Russian), theme, default period and mode, how many months to load, your username, goal, clear cache.
 
-**Chrome:** `chrome://extensions` → «Режим разработчика» → «Загрузить распакованное расширение» → эта папка.
+## Install
 
-**Firefox:** `about:debugging#/runtime/this-firefox` → «Загрузить временное дополнение…» → `manifest.json`.
-Для постоянной установки дополнение нужно подписать на addons.mozilla.org. Замените `gecko.id` в манифесте на свой.
+**Chrome:** open `chrome://extensions`, enable "Developer mode", click "Load unpacked" and select this folder.
 
-## Заметки
+**Firefox:** open `about:debugging#/runtime/this-firefox`, click "Load Temporary Add-on…" and select `manifest.json`.
+A temporary add-on disappears after Firefox restarts; for a permanent install the add-on has to be signed on addons.mozilla.org.
 
-- Личные встречи считаются по вашим партиям. Укажите свой ник в попапе, иначе «мной» считается нижний игрок на доске.
-- Партии хранятся в `storage.local` в сжатом виде. Прошлые месяцы кэшируются навсегда, текущий месяц обновляется раз в 5 минут.
-- Селектор ников в партии (`[data-test-element="user-tagline-username"]`) зависит от вёрстки chess.com и может измениться.
+## Notes
 
-## Публикация
+- Head to head is computed from your own games. Enter your username in the popup; otherwise the bottom player on the board is assumed to be you.
+- Games are stored in `storage.local` in a compact form. Past months are cached for good, the current month is refreshed every 5 minutes.
+- The username selector in a game (`[data-test-element="user-tagline-username"]`) depends on the chess.com markup and may change.
+- Accuracy is available only for games you opened a Game Review for on chess.com.
+
+## Publishing
 
 ```bash
 node scripts/build.js
 ```
 
-Создаёт `dist/winrate-stats-chrome-<версия>.zip` и `dist/winrate-stats-firefox-<версия>.zip`. Пошаговая инструкция и тексты для магазинов: [store/listing.md](store/listing.md). Политика конфиденциальности: [PRIVACY.md](PRIVACY.md).
+Creates `dist/winrate-stats-chrome-<version>.zip` and `dist/winrate-stats-firefox-<version>.zip`.
+Step-by-step instructions and store texts: [store/listing.md](store/listing.md). Privacy policy: [PRIVACY.md](PRIVACY.md).
 
-## Разработка
+## Development
 
 ```bash
 node test/test.js
 ```
 
-`test/harness.html` рисует панель на реальных данных API без установки расширения. Запустите
-`python3 -m http.server 8765` в корне проекта и откройте `http://127.0.0.1:8765/test/harness.html`
-(параметры `?user=ник&me=ник&lang=en`).
+`test/harness.html` renders the panel with real API data without installing the extension. Run
+`python3 -m http.server 8765` in the project root and open `http://127.0.0.1:8765/test/harness.html`
+(parameters: `?user=<name>&me=<name>&lang=en&kind=profile&goal=450&theme=light`).
 
-## Лицензия
+## License
 
-MIT, см. [LICENSE](LICENSE). Расширение неофициальное и не связано с Chess.com.
+MIT, see [LICENSE](LICENSE).
