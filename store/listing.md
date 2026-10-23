@@ -1,7 +1,7 @@
 # Тексты для магазинов
 
 Название: **Winrate Stats for Chess.com**
-Версия: 1.0.0
+Версия: 1.1.0
 Категория: Chrome — Fun (или Productivity); Firefox — Games & Entertainment.
 Языки: English (основной), Русский.
 
@@ -52,8 +52,9 @@ Winrate Stats for Chess.com adds a compact stats panel to chess.com. Open any pr
 - Last losses with a link straight to the game review
 - Head-to-head record against your opponent and a compare tab for any two players
 - A WR badge next to usernames in a game
+- A calendar of your games and your puzzle rating
 - Export to CSV and JSON; light and dark themes; draggable panel; Alt+W to collapse
-- English and Russian
+- Interface in English, Russian, Spanish, German and French
 
 **Privacy:** uses only the public chess.com API, stores settings and cache locally, collects nothing. It never analyses positions or suggests moves. Unofficial extension, not affiliated with Chess.com.
 
@@ -73,8 +74,9 @@ Winrate Stats for Chess.com добавляет на chess.com компактну
 - Последние поражения со ссылкой на разбор партии
 - Личные встречи с соперником и вкладка сравнения двух игроков
 - Значок WR рядом с никами в партии
+- Календарь партий и рейтинг задач
 - Экспорт в CSV и JSON, светлая и тёмная темы, перетаскиваемая панель, Alt+W сворачивает
-- Русский и английский интерфейс
+- Интерфейс на русском, английском, испанском, немецком и французском
 
 **Приватность:** только публичный API chess.com, настройки и кэш хранятся локально, ничего не собирается. Расширение не анализирует позиции и не подсказывает ходы. Неофициальное расширение, не связано с Chess.com.
 
@@ -101,13 +103,13 @@ Chrome: 1280×800 или 640×400, от 1 до 5 штук. AMO: любой ра�
 **Firefox (addons.mozilla.org)**
 1. Войти или создать аккаунт на https://addons.mozilla.org/developers/
 2. Submit a New Add-on → выбрать «On this site» (публично) или «On your own» (только подпись, без каталога).
-3. Загрузить `dist/winrate-stats-firefox-1.0.0.zip`.
+3. Загрузить `dist/winrate-stats-firefox-1.1.0.zip`.
 4. Исходники отправлять не нужно (код не минифицирован), на вопрос о build-процессе ответить «No».
 5. Заполнить карточку из этого файла, добавить скриншоты и политику конфиденциальности.
 
 **Chrome Web Store**
 1. Аккаунт разработчика: https://chrome.google.com/webstore/devconsole (разовый взнос около 5 USD).
-2. New item → загрузить `dist/winrate-stats-chrome-1.0.0.zip`.
+2. New item → загрузить `dist/winrate-stats-chrome-1.1.0.zip`.
 3. Store listing: описание, скриншоты, иконка 128×128 уже в пакете, категория, язык.
 4. Privacy: single purpose, обоснование разрешений, раскрытие данных, ссылка на политику.
 5. Submit for review (обычно от нескольких часов до нескольких дней).

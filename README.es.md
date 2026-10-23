@@ -2,10 +2,10 @@
 
 [English](README.md) | [Русский](README.ru.md) | **Español** | [Deutsch](README.de.md) | [Français](README.fr.md)
 
+[![CI](https://github.com/belokosoff/chess-winrate/actions/workflows/ci.yml/badge.svg)](https://github.com/belokosoff/chess-winrate/actions/workflows/ci.yml)
+
 Extensión de navegador para Chrome y Firefox (Manifest V3) que muestra estadísticas de los jugadores en chess.com.
 Usa solo la API pública de chess.com y nunca sugiere jugadas. No es oficial y no está afiliada a Chess.com.
-
-> La interfaz de la extensión está disponible en inglés y ruso.
 
 <p align="center">
   <img src="docs/screenshots/overview.png" width="300" alt="Resumen">
@@ -24,11 +24,12 @@ Usa solo la API pública de chess.com y nunca sugiere jugadas. No es oficial y n
 - Análisis: uso del tiempo, resultados contra rivales más fuertes y más débiles, sesiones (cómo juegas tras una derrota) y precisión.
 - Tendencia: objetivo de rating con una estimación, informe semana a semana y gráficos de rating y de porcentaje de victorias.
 - Derrotas: tus últimas 15 derrotas con un enlace al análisis de la partida en chess.com.
+- Un calendario de partidas en la pestaña «Cuándo» y tu rating de problemas en el Resumen.
 - Comparar: dos jugadores lado a lado.
 - Un aviso de «haz una pausa» tras 3 derrotas seguidas.
 - Una insignia `WR xx%` junto a los nombres de usuario y exportación a CSV y JSON.
 - Temas claro y oscuro, panel movible (doble clic en el encabezado para devolverlo a su sitio) y `Alt+W` para plegarlo.
-- Una ventana de ajustes: idioma (inglés/ruso), tema, periodo y modo por defecto, meses que se cargan, tu usuario, objetivo y borrar la caché.
+- Una ventana de ajustes: idioma (inglés, ruso, español, alemán, francés), tema, periodo y modo por defecto, meses que se cargan, tu usuario, objetivo y borrar la caché.
 
 ## Instalación
 

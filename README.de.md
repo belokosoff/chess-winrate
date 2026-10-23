@@ -2,10 +2,10 @@
 
 [English](README.md) | [Русский](README.ru.md) | [Español](README.es.md) | **Deutsch** | [Français](README.fr.md)
 
+[![CI](https://github.com/belokosoff/chess-winrate/actions/workflows/ci.yml/badge.svg)](https://github.com/belokosoff/chess-winrate/actions/workflows/ci.yml)
+
 Eine Browser-Erweiterung für Chrome und Firefox (Manifest V3), die Spielerstatistiken auf chess.com anzeigt.
 Sie nutzt nur die öffentliche chess.com-API und schlägt nie Züge vor. Inoffiziell und nicht mit Chess.com verbunden.
-
-> Die Oberfläche der Erweiterung gibt es auf Englisch und Russisch.
 
 <p align="center">
   <img src="docs/screenshots/overview.png" width="300" alt="Übersicht">
@@ -24,11 +24,12 @@ Sie nutzt nur die öffentliche chess.com-API und schlägt nie Züge vor. Inoffiz
 - Analyse: Zeitnutzung, Ergebnisse gegen stärkere und schwächere Gegner, Sitzungen (wie du nach einer Niederlage spielst) und Genauigkeit.
 - Verlauf: Wertungsziel mit Prognose, Wochenvergleich sowie Diagramme für Wertung und gleitende Siegquote.
 - Niederlagen: deine letzten 15 Niederlagen mit Link zur Partieanalyse auf chess.com.
+- Ein Partienkalender im Tab „Wann“ und deine Aufgabenwertung in der Übersicht.
 - Vergleich: zwei Spieler nebeneinander.
 - Ein Hinweis „Mach eine Pause“ nach 3 Niederlagen in Folge.
 - Ein `WR xx%`-Abzeichen neben Benutzernamen sowie Export als CSV und JSON.
 - Helles und dunkles Design, verschiebbares Panel (Doppelklick auf die Kopfzeile setzt es zurück) und `Alt+W` zum Ein- und Ausklappen.
-- Ein Einstellungsfenster: Sprache (Englisch/Russisch), Design, Standardzeitraum und -modus, Anzahl der geladenen Monate, dein Benutzername, Ziel und Cache leeren.
+- Ein Einstellungsfenster: Sprache (Englisch, Russisch, Spanisch, Deutsch, Französisch), Design, Standardzeitraum und -modus, Anzahl der geladenen Monate, dein Benutzername, Ziel und Cache leeren.
 
 ## Installation
 

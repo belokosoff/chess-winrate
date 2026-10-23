@@ -2,6 +2,8 @@
 
 **English** | [Русский](README.ru.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Français](README.fr.md)
 
+[![CI](https://github.com/belokosoff/chess-winrate/actions/workflows/ci.yml/badge.svg)](https://github.com/belokosoff/chess-winrate/actions/workflows/ci.yml)
+
 A browser extension for Chrome and Firefox (Manifest V3) that shows player statistics on chess.com.
 It uses only the public chess.com API and never suggests moves. Unofficial, not affiliated with Chess.com.
 
@@ -22,11 +24,12 @@ It uses only the public chess.com API and never suggests moves. Unofficial, not 
 - Insights: time usage, winrate against stronger and weaker opponents, sessions (how you play after a loss), accuracy.
 - Trend: rating goal with an estimate, week-over-week report, rating and rolling winrate charts.
 - Losses: your last 15 losses with a link to the game review on chess.com.
+- A game calendar in the "When" tab and your puzzle rating in the Overview.
 - Compare: two players side by side.
 - A "take a break" hint after 3 losses in a row.
 - A `WR xx%` badge next to usernames, CSV and JSON export.
 - Light and dark themes, a draggable panel (double-click the header to reset it), `Alt+W` collapses the panel.
-- A settings popup: language (English/Russian), theme, default period and mode, how many months to load, your username, goal, clear cache.
+- A settings popup: language (English, Russian, Spanish, German, French), theme, default period and mode, how many months to load, your username, goal, clear cache.
 
 ## Install
 

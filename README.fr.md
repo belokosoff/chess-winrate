@@ -2,10 +2,10 @@
 
 [English](README.md) | [Русский](README.ru.md) | [Español](README.es.md) | [Deutsch](README.de.md) | **Français**
 
+[![CI](https://github.com/belokosoff/chess-winrate/actions/workflows/ci.yml/badge.svg)](https://github.com/belokosoff/chess-winrate/actions/workflows/ci.yml)
+
 Une extension de navigateur pour Chrome et Firefox (Manifest V3) qui affiche les statistiques des joueurs sur chess.com.
 Elle utilise uniquement l'API publique de chess.com et ne suggère jamais de coups. Non officielle, sans lien avec Chess.com.
-
-> L'interface de l'extension est disponible en anglais et en russe.
 
 <p align="center">
   <img src="docs/screenshots/overview.png" width="300" alt="Aperçu">
@@ -24,11 +24,12 @@ Elle utilise uniquement l'API publique de chess.com et ne suggère jamais de cou
 - Analyse : utilisation du temps, résultats contre des adversaires plus forts et plus faibles, sessions (comment vous jouez après une défaite) et précision.
 - Tendance : objectif de classement avec une estimation, bilan semaine par semaine, graphiques du classement et du taux de victoires glissant.
 - Défaites : vos 15 dernières défaites avec un lien vers l'analyse de la partie sur chess.com.
+- Un calendrier des parties dans l'onglet « Quand » et votre classement aux problèmes dans l'aperçu.
 - Comparer : deux joueurs côte à côte.
 - Un rappel « faites une pause » après 3 défaites d'affilée.
 - Un badge `WR xx%` à côté des pseudos, ainsi qu'un export CSV et JSON.
 - Thèmes clair et sombre, panneau déplaçable (un double-clic sur l'en-tête le remet en place) et `Alt+W` pour le replier.
-- Une fenêtre de réglages : langue (anglais/russe), thème, période et mode par défaut, nombre de mois à charger, votre pseudo, objectif et vidage du cache.
+- Une fenêtre de réglages : langue (anglais, russe, espagnol, allemand, français), thème, période et mode par défaut, nombre de mois à charger, votre pseudo, objectif et vidage du cache.
 
 ## Installation
 
