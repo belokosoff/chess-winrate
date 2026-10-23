@@ -4,6 +4,12 @@
 <link rel="stylesheet" href="../content.css">
 <body style="background:#312e2b;min-height:100vh">
 <script>
+  // ?shot=1 — крупная панель по центру, для скриншотов в магазины
+  if (new URLSearchParams(location.search).has("shot")) {
+    document.head.insertAdjacentHTML("beforeend", "<style>#cwr-panel{left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;transform:translate(-50%,-50%) scale(1.6);max-height:480px!important}</style>");
+  }
+</script>
+<script>
   // In-memory stand-in for the extension storage; everything else is the real code and the real API.
   const mem = {};
   globalThis.chrome = { storage: {
@@ -27,5 +33,13 @@
     const settings = { ...(await CWR.loadSettings()), months: 2, lang: q.get("lang") || "ru", goal: Number(q.get("goal")) || 0, theme: q.get("theme") || "dark" };
     CWR.setLang(settings.lang);
     window.panel = CWR.mountPanel({ kind: q.get("kind") || "game", user: q.get("user") || "hikaru", me: q.get("me") || "magnuscarlsen" }, settings);
+    // ?tab=Insights — открыть вкладку после загрузки данных (для скриншотов)
+    const want = q.get("tab");
+    if (want) {
+      await window.panel.ready;
+      const btn = [...document.querySelectorAll("#cwr-panel .cwr-tabs button")].find((b) => b.textContent === want);
+      btn?.click();
+    }
+    document.title = "ready";
   })();
 </script>

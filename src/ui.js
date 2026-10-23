@@ -666,9 +666,10 @@
       }
     }
 
-    load();
+    const ready = load();
 
     return {
+      ready,
       toggle,
       destroy() {
         st.dead = true;
