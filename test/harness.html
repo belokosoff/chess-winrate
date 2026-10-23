@@ -1,0 +1,31 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>UI harness</title>
+<link rel="stylesheet" href="../content.css">
+<body style="background:#312e2b;min-height:100vh">
+<script>
+  // In-memory stand-in for the extension storage; everything else is the real code and the real API.
+  const mem = {};
+  globalThis.chrome = { storage: {
+    local: {
+      get: async (k) => (k === null ? { ...mem } : k in mem ? { [k]: mem[k] } : {}),
+      set: async (o) => Object.assign(mem, JSON.parse(JSON.stringify(o))),
+      remove: async (ks) => ks.forEach((k) => delete mem[k]),
+    },
+    onChanged: { addListener() {} },
+  } };
+</script>
+<script src="../src/core.js"></script>
+<script src="../src/i18n.js"></script>
+<script src="../src/settings.js"></script>
+<script src="../src/api.js"></script>
+<script src="../src/stats.js"></script>
+<script src="../src/ui.js"></script>
+<script>
+  (async () => {
+    const q = new URLSearchParams(location.search);
+    const settings = { ...(await CWR.loadSettings()), months: 2, lang: q.get("lang") || "ru", goal: Number(q.get("goal")) || 0, theme: q.get("theme") || "dark" };
+    CWR.setLang(settings.lang);
+    window.panel = CWR.mountPanel({ kind: q.get("kind") || "game", user: q.get("user") || "hikaru", me: q.get("me") || "magnuscarlsen" }, settings);
+  })();
+</script>

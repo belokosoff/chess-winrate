@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chess.com Winrate</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <h1 data-i18n="s_title"></h1>
+
+  <label>
+    <span data-i18n="s_lang"></span>
+    <select id="lang">
+      <option value="auto" data-i18n="s_lang_auto"></option>
+      <option value="ru">Русский</option>
+      <option value="en">English</option>
+    </select>
+  </label>
+
+  <label class="check"><input type="checkbox" id="panel"> <span data-i18n="s_panel"></span></label>
+  <label class="check"><input type="checkbox" id="badges"> <span data-i18n="s_badges"></span></label>
+
+  <label>
+    <span data-i18n="s_period"></span>
+    <select id="period">
+      <option value="all" data-i18n="period_all"></option>
+      <option value="30" data-i18n="period_30"></option>
+      <option value="90" data-i18n="period_90"></option>
+      <option value="100" data-i18n="period_100"></option>
+    </select>
+  </label>
+
+  <label>
+    <span data-i18n="s_mode"></span>
+    <select id="mode">
+      <option value="all" data-i18n="mode_all"></option>
+      <option value="rapid" data-i18n="rapid"></option>
+      <option value="blitz" data-i18n="blitz"></option>
+      <option value="bullet" data-i18n="bullet"></option>
+      <option value="daily" data-i18n="daily"></option>
+    </select>
+  </label>
+
+  <label>
+    <span data-i18n="s_months"></span>
+    <select id="months"></select>
+  </label>
+
+  <label>
+    <span data-i18n="s_me"></span>
+    <input type="text" id="me" autocomplete="off" spellcheck="false">
+    <small data-i18n="s_me_hint"></small>
+  </label>
+
+  <label>
+    <span data-i18n="s_goal"></span>
+    <input type="number" id="goal" min="0" max="4000" step="10" inputmode="numeric">
+  </label>
+
+  <label>
+    <span data-i18n="s_theme"></span>
+    <select id="theme">
+      <option value="dark" data-i18n="theme_dark"></option>
+      <option value="light" data-i18n="theme_light"></option>
+      <option value="auto" data-i18n="theme_auto"></option>
+    </select>
+  </label>
+
+  <div class="row">
+    <button id="clear" data-i18n="s_clear"></button>
+    <span id="status" role="status"></span>
+  </div>
+
+  <p class="note" data-i18n="s_hotkey"></p>
+  <p class="note" data-i18n="s_note"></p>
+
+  <script src="../src/core.js"></script>
+  <script src="../src/i18n.js"></script>
+  <script src="../src/settings.js"></script>
+  <script src="../src/api.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
