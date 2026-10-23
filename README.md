@@ -5,6 +5,15 @@
 A browser extension for Chrome and Firefox (Manifest V3) that shows player statistics on chess.com.
 It uses only the public chess.com API and never suggests moves. Unofficial, not affiliated with Chess.com.
 
+<p align="center">
+  <img src="docs/screenshots/overview.png" width="300" alt="Overview">
+  <img src="docs/screenshots/insights.png" width="300" alt="Insights">
+</p>
+<p align="center">
+  <img src="docs/screenshots/openings.png" width="300" alt="Openings">
+  <img src="docs/screenshots/trend.png" width="300" alt="Trend">
+</p>
+
 ## Features
 
 - A stats panel on profile pages (`/member/<username>`), during a game (for your opponent) and on the home page (for your own username from the settings).

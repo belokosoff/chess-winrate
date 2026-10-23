@@ -7,6 +7,15 @@ Sie nutzt nur die öffentliche chess.com-API und schlägt nie Züge vor. Inoffiz
 
 > Die Oberfläche der Erweiterung gibt es auf Englisch und Russisch.
 
+<p align="center">
+  <img src="docs/screenshots/overview.png" width="300" alt="Übersicht">
+  <img src="docs/screenshots/insights.png" width="300" alt="Analyse">
+</p>
+<p align="center">
+  <img src="docs/screenshots/openings.png" width="300" alt="Eröffnungen">
+  <img src="docs/screenshots/trend.png" width="300" alt="Verlauf">
+</p>
+
 ## Funktionen
 
 - Ein Statistik-Panel auf Profilseiten (`/member/<Benutzername>`), während einer Partie (für deinen Gegner) und auf der Startseite (für deinen eigenen Benutzernamen aus den Einstellungen).

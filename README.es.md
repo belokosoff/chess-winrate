@@ -7,6 +7,15 @@ Usa solo la API pública de chess.com y nunca sugiere jugadas. No es oficial y n
 
 > La interfaz de la extensión está disponible en inglés y ruso.
 
+<p align="center">
+  <img src="docs/screenshots/overview.png" width="300" alt="Resumen">
+  <img src="docs/screenshots/insights.png" width="300" alt="Análisis">
+</p>
+<p align="center">
+  <img src="docs/screenshots/openings.png" width="300" alt="Aperturas">
+  <img src="docs/screenshots/trend.png" width="300" alt="Tendencia">
+</p>
+
 ## Funciones
 
 - Un panel de estadísticas en los perfiles (`/member/<usuario>`), durante una partida (para tu rival) y en la página de inicio (para tu propio usuario indicado en los ajustes).

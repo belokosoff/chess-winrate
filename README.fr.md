@@ -7,6 +7,15 @@ Elle utilise uniquement l'API publique de chess.com et ne suggère jamais de cou
 
 > L'interface de l'extension est disponible en anglais et en russe.
 
+<p align="center">
+  <img src="docs/screenshots/overview.png" width="300" alt="Aperçu">
+  <img src="docs/screenshots/insights.png" width="300" alt="Analyse">
+</p>
+<p align="center">
+  <img src="docs/screenshots/openings.png" width="300" alt="Ouvertures">
+  <img src="docs/screenshots/trend.png" width="300" alt="Tendance">
+</p>
+
 ## Fonctionnalités
 
 - Un panneau de statistiques sur les profils (`/member/<pseudo>`), pendant une partie (pour votre adversaire) et sur la page d'accueil (pour votre propre pseudo défini dans les réglages).

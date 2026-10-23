@@ -5,6 +5,15 @@
 Расширение для Chrome и Firefox (Manifest V3), которое показывает статистику игроков на chess.com.
 Использует только публичный API chess.com и не подсказывает ходы. Неофициальное, не связано с Chess.com.
 
+<p align="center">
+  <img src="docs/screenshots/overview.png" width="300" alt="Обзор">
+  <img src="docs/screenshots/insights.png" width="300" alt="Разбор">
+</p>
+<p align="center">
+  <img src="docs/screenshots/openings.png" width="300" alt="Дебюты">
+  <img src="docs/screenshots/trend.png" width="300" alt="Динамика">
+</p>
+
 ## Возможности
 
 - Панель статистики на странице профиля (`/member/ник`), во время партии (для соперника) и на главной (для вашего ника из настроек).
