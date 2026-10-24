@@ -3,6 +3,7 @@
 **English** | [Русский](README.ru.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Français](README.fr.md)
 
 [![CI](https://github.com/belokosoff/chess-winrate/actions/workflows/ci.yml/badge.svg)](https://github.com/belokosoff/chess-winrate/actions/workflows/ci.yml)
+[![Firefox Add-Ons](https://img.shields.io/badge/Firefox_Add_Ons-20123A?logo=firefoxbrowser&logoColor=white)](https://addons.mozilla.org/en-US/firefox/addon/winrate-stats-for-chess-com/)
 
 A browser extension for Chrome and Firefox (Manifest V3) that shows player statistics on chess.com.
 It uses only the public chess.com API and never suggests moves. Unofficial, not affiliated with Chess.com.
